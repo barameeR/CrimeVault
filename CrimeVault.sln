@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrimeVault.WebAPI", "CrimeVault\CrimeVault.WebAPI.csproj", "{D15C6153-D5B3-4627-8A81-AA87693938F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrimeVault.Domain", "CrimeVault.Domain\CrimeVault.Domain.csproj", "{C0931464-3146-4728-82F1-9EF294F6A34C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrimeVault.Application", "CrimeVault.Application\CrimeVault.Application.csproj", "{6E095DB2-EFBC-41E3-AEA0-2A604AD90B95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrimeVault.Infrastructure", "CrimeVault.Infrastructure\CrimeVault.Infrastructure.csproj", "{65263264-3240-490C-8DB7-D6FC28E02B8F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrimeVault.Presentation", "CrimeVault.Presentation\CrimeVault.Presentation.csproj", "{581A1B84-4CFF-4C24-B4B2-2682C3FE880F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D15C6153-D5B3-4627-8A81-AA87693938F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D15C6153-D5B3-4627-8A81-AA87693938F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D15C6153-D5B3-4627-8A81-AA87693938F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D15C6153-D5B3-4627-8A81-AA87693938F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0931464-3146-4728-82F1-9EF294F6A34C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0931464-3146-4728-82F1-9EF294F6A34C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0931464-3146-4728-82F1-9EF294F6A34C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0931464-3146-4728-82F1-9EF294F6A34C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E095DB2-EFBC-41E3-AEA0-2A604AD90B95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E095DB2-EFBC-41E3-AEA0-2A604AD90B95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E095DB2-EFBC-41E3-AEA0-2A604AD90B95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E095DB2-EFBC-41E3-AEA0-2A604AD90B95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65263264-3240-490C-8DB7-D6FC28E02B8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65263264-3240-490C-8DB7-D6FC28E02B8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65263264-3240-490C-8DB7-D6FC28E02B8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65263264-3240-490C-8DB7-D6FC28E02B8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{581A1B84-4CFF-4C24-B4B2-2682C3FE880F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{581A1B84-4CFF-4C24-B4B2-2682C3FE880F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{581A1B84-4CFF-4C24-B4B2-2682C3FE880F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{581A1B84-4CFF-4C24-B4B2-2682C3FE880F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
