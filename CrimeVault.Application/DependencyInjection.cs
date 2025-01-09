@@ -8,6 +8,7 @@ public static class DependencyInjection
         var assembly = typeof(DependencyInjection).Assembly;
         services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(assembly));
         services.AddValidatorsFromAssembly(assembly);
+        services.AddScoped<IAuthenticationService, AuthenticationService>();
 
         return services;
     }
