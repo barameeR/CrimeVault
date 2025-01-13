@@ -1,7 +1,6 @@
 ﻿
-public record AuthenticationResult(Guid Id,
-                                   string FirstName,
-                                   string LastName,
-                                   string Email,
+using CrimeVault.Domain.Entities;
+
+public record AuthenticationResult(User User,
                                    string Token);
 
