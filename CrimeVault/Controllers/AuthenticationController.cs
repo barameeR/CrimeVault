@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CrimeVault.WebAPI.Filters;
+using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("auth")]
@@ -12,6 +13,7 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpPost("register")]
+
     public IActionResult Register(RegisterRequest reqest)
     {
         var result = _authenticationService.Register(reqest.FirstName, reqest.LastName, reqest.Email, reqest.Password);
