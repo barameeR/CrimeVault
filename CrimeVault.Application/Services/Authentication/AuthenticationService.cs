@@ -1,6 +1,9 @@
-﻿
+﻿using CrimeVault.Application.Common.Errors;
 using CrimeVault.Application.Common.Interfaces.Persistence;
 using CrimeVault.Domain.Entities;
+using System.Net;
+
+namespace CrimeVault.Application.Services.Authentication;
 
 public class AuthenticationService : IAuthenticationService
 {
@@ -17,7 +20,7 @@ public class AuthenticationService : IAuthenticationService
         var user = _userRepository.GetByEmail(email);
         if (user == null || user.Password != password)
         {
-            throw new Exception("Invalid email or password");
+            throw new BaseException(HttpStatusCode.BadRequest,"Invalid email or password");
         }
 
         var token = _jwtTokenGenerator.GenerateToken(user);
@@ -28,7 +31,7 @@ public class AuthenticationService : IAuthenticationService
     {
         if (_userRepository.GetByEmail(email) != null)
         {
-            throw new Exception("User already exists");
+            throw new EmailExistException();
         }
 
         var newUser = new User

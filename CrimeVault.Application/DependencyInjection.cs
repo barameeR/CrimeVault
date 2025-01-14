@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using CrimeVault.Application.Services.Authentication;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
 public static class DependencyInjection

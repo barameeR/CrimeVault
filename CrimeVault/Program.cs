@@ -1,6 +1,3 @@
-using CrimeVault.WebAPI.Filters;
-using CrimeVault.WebAPI.Middleware;
-
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services
@@ -9,7 +6,6 @@ builder.Services
     .AddPresentation();
 
 var app = builder.Build();
-//app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseExceptionHandler("/error");
 app.UseHttpsRedirection();
 app.UseAuthorization();

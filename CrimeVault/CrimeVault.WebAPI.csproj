@@ -20,4 +20,9 @@
     <ProjectReference Include="..\CrimeVault.Presentation\CrimeVault.Presentation.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Middleware\" />
+    <Folder Include="Common\" />
+  </ItemGroup>
+
 </Project>
