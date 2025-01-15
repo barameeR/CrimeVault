@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CrimeVault.WebAPI.Controllers;
 
-public class ErrorsController : ControllerBase
+public class ErrorsController : ApiController
 {
     [Route("/error")]
     public IActionResult Error()

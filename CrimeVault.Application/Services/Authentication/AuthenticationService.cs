@@ -1,6 +1,7 @@
 ﻿using CrimeVault.Application.Common.Errors;
 using CrimeVault.Application.Common.Interfaces.Persistence;
 using CrimeVault.Domain.Entities;
+using FluentResults;
 using System.Net;
 
 namespace CrimeVault.Application.Services.Authentication;
@@ -15,23 +16,23 @@ public class AuthenticationService : IAuthenticationService
         _userRepository = userRepository;
 
     }
-    public AuthenticationResult Login(string email, string password)
+    public Result<AuthenticationResult> Login(string email, string password)
     {
         var user = _userRepository.GetByEmail(email);
         if (user == null || user.Password != password)
         {
-            throw new BaseException(HttpStatusCode.BadRequest,"Invalid email or password");
+            return Result.Fail([new BadRequestError("Invalid email or password")]);
         }
 
         var token = _jwtTokenGenerator.GenerateToken(user);
         return new AuthenticationResult(user, token);
     }
 
-    public AuthenticationResult Register(string firstName, string lastName, string email, string password)
+    public Result<AuthenticationResult> Register(string firstName, string lastName, string email, string password)
     {
         if (_userRepository.GetByEmail(email) != null)
         {
-            throw new EmailExistException();
+            return Result.Fail(new BadRequestError( "Email already in use"));
         }
 
         var newUser = new User
