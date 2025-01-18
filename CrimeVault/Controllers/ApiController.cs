@@ -40,9 +40,8 @@ public class ApiController : ControllerBase
     /// <returns>An object containing the error details.</returns>
     private object GetErrorDetails(IError error)
     {
-        var statusCode = error.Metadata.ContainsKey(StatusCodeKey)
-            ? (int)error.Metadata[StatusCodeKey]
-            : (int)HttpStatusCode.BadRequest;
+        var statusCode = error.Metadata.TryGetValue(StatusCodeKey, out object? value)
+            ? (int)value : (int)HttpStatusCode.BadRequest;
 
         return new
         {

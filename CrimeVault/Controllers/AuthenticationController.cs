@@ -1,45 +1,44 @@
-﻿using CrimeVault.Application.Services.Authentication;
-using FluentResults;
+﻿using CrimeVault.Application.Services.Authentication.Commands.Register;
+using CrimeVault.Application.Services.Authentication.Common;
+using CrimeVault.Application.Services.Authentication.Queries.Login;
+using CrimeVault.Presentation.Authentication;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CrimeVault.WebAPI.Controllers;
 
-    [Route("auth")]
+[Route("auth")]
 public class AuthenticationController : ApiController
 {
-    private readonly IAuthenticationService _authenticationService;
-
-    public AuthenticationController(IAuthenticationService authenticationService)
+    private readonly IMediator _mediator;
+    public AuthenticationController(IMediator mediator)
     {
-        _authenticationService = authenticationService;
+        _mediator = mediator;
+
     }
 
     [HttpPost("register")]
-
-    public IActionResult Register(RegisterRequest reqest)
+    public async Task<IActionResult> Register(RegisterRequest reqest)
     {
-        var result = _authenticationService.Register(reqest.FirstName, reqest.LastName, reqest.Email, reqest.Password);
+        var result = await _mediator.Send(new RegisterCommand(reqest.FirstName, reqest.LastName, reqest.Email, reqest.Password));
         if (result.IsSuccess)
         {
-            return Ok(result.Value);
+            return Ok(MapToResponse(result.Value));
         }
         return Problem(result.Errors);
-
-        //var response = new AuthenticationResponse(result.User.Id, result.User.FirstName, result.User.LastName, result.User.Email, result.Token);
     }
-
-
-
     [HttpPost("login")]
-    public IActionResult Login(LoginRequest reqest)
+    public async Task<IActionResult> Login(LoginRequest reqest)
     {
-        var result = _authenticationService.Login(reqest.Email, reqest.Password);
+        var result = await _mediator.Send(new LoginQuery(reqest.Email, reqest.Password));
         if (result.IsSuccess)
         {
-            return Ok(result.Value);
+            return Ok(MapToResponse(result.Value));
         }
         return Problem(result.Errors);
-        //var response = new AuthenticationResponse(result.User.Id, result.User.FirstName, result.User.LastName, result.User.Email, result.Token);
-        //return Ok(response);
+    }
+    private AuthenticationResponse MapToResponse(AuthenticationResult result)
+    {
+        return new(result.User.Id, result.User.FirstName, result.User.LastName, result.User.Email, result.Token);
     }
 }
