@@ -10,17 +10,17 @@ namespace CrimeVault.WebAPI.Controllers;
 [Route("auth")]
 public class AuthenticationController : ApiController
 {
-    private readonly IMediator _mediator;
-    public AuthenticationController(IMediator mediator)
+    private readonly ISender _sender;
+    public AuthenticationController(ISender sender)
     {
-        _mediator = mediator;
+        _sender = sender;
 
     }
 
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterRequest reqest)
     {
-        var result = await _mediator.Send(new RegisterCommand(reqest.FirstName, reqest.LastName, reqest.Email, reqest.Password));
+        var result = await _sender.Send(new RegisterCommand(reqest.FirstName, reqest.LastName, reqest.Email, reqest.Password));
         if (result.IsSuccess)
         {
             return Ok(MapToResponse(result.Value));
@@ -30,7 +30,7 @@ public class AuthenticationController : ApiController
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginRequest reqest)
     {
-        var result = await _mediator.Send(new LoginQuery(reqest.Email, reqest.Password));
+        var result = await _sender.Send(new LoginQuery(reqest.Email, reqest.Password));
         if (result.IsSuccess)
         {
             return Ok(MapToResponse(result.Value));
