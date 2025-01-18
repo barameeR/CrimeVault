@@ -1,4 +1,5 @@
 ﻿using FluentResults;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -9,6 +10,12 @@ public class ApiController : ControllerBase
     private const string StatusCodeKey = "StatusCode";
     private const string DetailKey = "Detail";
     private const int DefaultStatusCode = (int)HttpStatusCode.BadRequest;
+    protected readonly ISender _sender;
+
+    protected ApiController(ISender sender)
+    {
+        _sender = sender;
+    }
 
     /// <summary>
     /// Creates an <see cref="IActionResult"/> that represents a problem response based on the provided list of errors.

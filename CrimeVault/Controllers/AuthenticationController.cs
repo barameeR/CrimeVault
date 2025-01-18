@@ -10,12 +10,10 @@ namespace CrimeVault.WebAPI.Controllers;
 [Route("auth")]
 public class AuthenticationController : ApiController
 {
-    private readonly ISender _sender;
-    public AuthenticationController(ISender sender)
+    public AuthenticationController(ISender sender) : base(sender)
     {
-        _sender = sender;
-
     }
+
 
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterRequest reqest)

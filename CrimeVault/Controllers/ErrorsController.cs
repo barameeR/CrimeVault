@@ -1,4 +1,5 @@
 ﻿using CrimeVault.Application.Common.Errors;
+using MediatR;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,6 +7,9 @@ namespace CrimeVault.WebAPI.Controllers;
 
 public class ErrorsController : ApiController
 {
+    public ErrorsController(ISender sender) : base(sender)
+    {
+    }
     [Route("/error")]
     public IActionResult Error()
     {
