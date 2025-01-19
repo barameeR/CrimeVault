@@ -1,22 +1,14 @@
-﻿using FluentResults;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿
+using CrimeVault.Domain.Abstractions;
 using System.Net;
 namespace CrimeVault.Application.Common.Errors;
-
-public class ErrorHandling
-{
-}
 
 // Base class for HTTP status code related errors
 public class HttpStatusCodeError : Error
 {
     public HttpStatusCodeError(HttpStatusCode statusCode, string message)
-        : base(message)
+        : base(message, statusCode.ToString())
     {
-        // Add status code metadata to the error
-        Metadata.Add("StatusCode", (int)statusCode); // Store the HTTP status code as metadata
     }
 }
 

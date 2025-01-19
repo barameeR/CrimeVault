@@ -1,15 +1,13 @@
-﻿using FluentResults;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using MapsterMapper;
+using CrimeVault.Domain.Abstractions;
 
 namespace CrimeVault.WebAPI.Controllers;
 [ApiController]
 public class ApiController : ControllerBase
 {
-    private const string StatusCodeKey = "StatusCode";
-    private const string DetailKey = "Detail";
     private const int DefaultStatusCode = (int)HttpStatusCode.BadRequest;
     protected readonly ISender _sender;
     protected readonly IMapper _mapper;
@@ -25,7 +23,7 @@ public class ApiController : ControllerBase
     /// </summary>
     /// <param name="errors">The list of errors to process.</param>
     /// <returns>An <see cref="IActionResult"/> representing the problem response.</returns>
-    protected IActionResult Problem(List<IError> errors)
+    protected IActionResult Problem(List<Error> errors)
     {
         switch (errors.Count)
         {
@@ -44,20 +42,19 @@ public class ApiController : ControllerBase
     }
 
     /// <summary>
-    /// Extracts error details from the provided <see cref="IError"/> instance.
+    /// Extracts error details from the provided <see cref="Error"/> instance.
     /// </summary>
     /// <param name="error">The error to extract details from.</param>
     /// <returns>An object containing the error details.</returns>
-    private static object GetErrorDetails(IError error)
+    private static object GetErrorDetails(Error error)
     {
-        var statusCode = error.Metadata.TryGetValue(StatusCodeKey, out object? value)
-            ? (int)value : (int)HttpStatusCode.BadRequest;
+        var statusCode = GetStatusCode(error);
 
         return new
         {
             status = statusCode,
             title = error.Message,
-            detail = error.Metadata.GetValueOrDefault(DetailKey)
+            detail = error.Message,
         };
     }
 
@@ -66,22 +63,20 @@ public class ApiController : ControllerBase
     /// </summary>
     /// <param name="error">The error to process.</param>
     /// <returns>An <see cref="IActionResult"/> representing the problem response.</returns>
-    private IActionResult CreateProblemResponse(IError error)
+    private IActionResult CreateProblemResponse(Error error)
     {
-        var statusCode = GetStatusCodeFromMetadata(error);
+        var statusCode = GetStatusCode(error);
         return Problem(statusCode: statusCode, title: error.Message);
     }
 
     /// <summary>
-    /// Retrieves the status code from the metadata of the provided <see cref="IError"/> instance.
+    /// Retrieves the status code from the metadata of the provided <see cref="Error"/> instance.
     /// </summary>
     /// <param name="error">The error to extract the status code from.</param>
     /// <returns>The status code extracted from the error metadata, or a default status code if not present.</returns>
-    private static int GetStatusCodeFromMetadata(IError error)
+    private static int GetStatusCode(Error error)
     {
-        return error.Metadata.TryGetValue(StatusCodeKey, out var value)
-            ? (int)value
-            : DefaultStatusCode;
+        return int.TryParse(error.Code,out var stautsCode) ? stautsCode : DefaultStatusCode;
     }
 }
 

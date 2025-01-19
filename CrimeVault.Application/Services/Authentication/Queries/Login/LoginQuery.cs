@@ -1,7 +1,7 @@
 ﻿
 
 using CrimeVault.Application.Services.Authentication.Common;
-using FluentResults;
+using CrimeVault.Domain.Abstractions;
 using MediatR;
 
 namespace CrimeVault.Application.Services.Authentication.Queries.Login;

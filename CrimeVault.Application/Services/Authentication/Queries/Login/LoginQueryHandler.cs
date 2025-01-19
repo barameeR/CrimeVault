@@ -3,7 +3,7 @@
 using CrimeVault.Application.Common.Errors;
 using CrimeVault.Application.Common.Interfaces.Persistence;
 using CrimeVault.Application.Services.Authentication.Common;
-using FluentResults;
+using CrimeVault.Domain.Abstractions;
 using MediatR;
 
 namespace CrimeVault.Application.Services.Authentication.Queries.Login;
@@ -22,11 +22,11 @@ internal class LoginQueryHandler : IRequestHandler<LoginQuery, Result<Authentica
         var user = _userRepository.GetByEmail(query.Email);
         if (user == null || user.Password != query.Password)
         {
-            return Result.Fail([new BadRequestError("Invalid email or password")]);
+            return Result<AuthenticationResult>.Failure([new BadRequestError("Invalid email or password")]);
         }
 
         var token = _jwtTokenGenerator.GenerateToken(user);
-        return new AuthenticationResult(user, token);
+        return Result<AuthenticationResult>.Success(new AuthenticationResult(user, token));
     }
 }
 

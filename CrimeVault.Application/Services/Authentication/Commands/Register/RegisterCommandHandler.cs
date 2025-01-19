@@ -1,8 +1,8 @@
 ﻿using CrimeVault.Application.Common.Errors;
 using CrimeVault.Application.Common.Interfaces.Persistence;
 using CrimeVault.Application.Services.Authentication.Common;
+using CrimeVault.Domain.Abstractions;
 using CrimeVault.Domain.Entities;
-using FluentResults;
 using MediatR;
 
 namespace CrimeVault.Application.Services.Authentication.Commands.Register;
@@ -21,7 +21,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Au
     {
         if (_userRepository.GetByEmail(command.Email) != null)
         {
-            return Result.Fail(new BadRequestError("Email already in use"));
+            return Result<AuthenticationResult>.Failure(new BadRequestError("Email already in use"));
         }
 
         var newUser = new User
@@ -33,7 +33,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Au
         };
         _userRepository.Add(newUser);
         var token = _jwtTokenGenerator.GenerateToken(newUser);
-        return new AuthenticationResult(newUser, token);
+        return Result<AuthenticationResult>.Success(new AuthenticationResult(newUser, token));
     }
 }
 
