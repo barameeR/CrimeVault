@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using MapsterMapper;
 
 namespace CrimeVault.WebAPI.Controllers;
 [ApiController]
@@ -11,10 +12,12 @@ public class ApiController : ControllerBase
     private const string DetailKey = "Detail";
     private const int DefaultStatusCode = (int)HttpStatusCode.BadRequest;
     protected readonly ISender _sender;
+    protected readonly IMapper _mapper;
 
-    protected ApiController(ISender sender)
+    protected ApiController(ISender sender, IMapper mapper)
     {
         _sender = sender;
+        _mapper = mapper;
     }
 
     /// <summary>
@@ -24,20 +27,20 @@ public class ApiController : ControllerBase
     /// <returns>An <see cref="IActionResult"/> representing the problem response.</returns>
     protected IActionResult Problem(List<IError> errors)
     {
-        if (errors == null || errors.Count == 0)
+        switch (errors.Count)
         {
-            return Problem(statusCode: (int)HttpStatusCode.InternalServerError, title: "An unexpected error occurred.");
+            case 0:
+                return Problem(statusCode: (int)HttpStatusCode.InternalServerError, title: "An unexpected error occurred.");
+            // Handle a single error
+            case 1:
+                return CreateProblemResponse(errors[0]);
+            default:
+            {
+                // Handle multiple errors
+                var errorDetails = errors.Select(GetErrorDetails).ToList();
+                return StatusCode((int)HttpStatusCode.MultiStatus, errorDetails); // 207 Multi-Status (for multiple errors)
+            }
         }
-
-        // Handle a single error
-        if (errors.Count == 1)
-        {
-            return CreateProblemResponse(errors[0]);
-        }
-
-        // Handle multiple errors
-        var errorDetails = errors.Select(GetErrorDetails).ToList();
-        return StatusCode((int)HttpStatusCode.MultiStatus, errorDetails); // 207 Multi-Status (for multiple errors)
     }
 
     /// <summary>
@@ -45,7 +48,7 @@ public class ApiController : ControllerBase
     /// </summary>
     /// <param name="error">The error to extract details from.</param>
     /// <returns>An object containing the error details.</returns>
-    private object GetErrorDetails(IError error)
+    private static object GetErrorDetails(IError error)
     {
         var statusCode = error.Metadata.TryGetValue(StatusCodeKey, out object? value)
             ? (int)value : (int)HttpStatusCode.BadRequest;
@@ -54,7 +57,7 @@ public class ApiController : ControllerBase
         {
             status = statusCode,
             title = error.Message,
-            detail = error.Metadata.ContainsKey(DetailKey) ? error.Metadata[DetailKey] : null
+            detail = error.Metadata.GetValueOrDefault(DetailKey)
         };
     }
 
@@ -76,8 +79,8 @@ public class ApiController : ControllerBase
     /// <returns>The status code extracted from the error metadata, or a default status code if not present.</returns>
     private static int GetStatusCodeFromMetadata(IError error)
     {
-        return error.Metadata.ContainsKey(StatusCodeKey)
-            ? (int)error.Metadata[StatusCodeKey]
+        return error.Metadata.TryGetValue(StatusCodeKey, out var value)
+            ? (int)value
             : DefaultStatusCode;
     }
 }

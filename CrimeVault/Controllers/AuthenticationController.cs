@@ -2,41 +2,27 @@
 using CrimeVault.Application.Services.Authentication.Common;
 using CrimeVault.Application.Services.Authentication.Queries.Login;
 using CrimeVault.Presentation.Authentication;
+using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CrimeVault.WebAPI.Controllers;
 
 [Route("auth")]
-public class AuthenticationController : ApiController
+public class AuthenticationController(ISender sender, IMapper mapper) : ApiController(sender, mapper)
 {
-    public AuthenticationController(ISender sender) : base(sender)
-    {
-    }
-
-
     [HttpPost("register")]
-    public async Task<IActionResult> Register(RegisterRequest reqest)
+    public async Task<IActionResult> Register(RegisterRequest request)
     {
-        var result = await _sender.Send(new RegisterCommand(reqest.FirstName, reqest.LastName, reqest.Email, reqest.Password));
-        if (result.IsSuccess)
-        {
-            return Ok(MapToResponse(result.Value));
-        }
-        return Problem(result.Errors);
+        var result =
+            await _sender.Send(_mapper.Map<RegisterCommand>(request));
+        return result.IsSuccess ? Ok(_mapper.Map<AuthenticationResponse>(result.Value)) : Problem(result.Errors);
     }
+
     [HttpPost("login")]
-    public async Task<IActionResult> Login(LoginRequest reqest)
+    public async Task<IActionResult> Login(LoginRequest request)
     {
-        var result = await _sender.Send(new LoginQuery(reqest.Email, reqest.Password));
-        if (result.IsSuccess)
-        {
-            return Ok(MapToResponse(result.Value));
-        }
-        return Problem(result.Errors);
-    }
-    private AuthenticationResponse MapToResponse(AuthenticationResult result)
-    {
-        return new(result.User.Id, result.User.FirstName, result.User.LastName, result.User.Email, result.Token);
+        var result = await _sender.Send(_mapper.Map<LoginQuery>(request));
+        return result.IsSuccess ? Ok(_mapper.Map<AuthenticationResponse>(result.Value)) : Problem(result.Errors);
     }
 }
