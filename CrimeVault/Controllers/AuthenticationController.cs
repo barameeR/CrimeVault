@@ -16,13 +16,13 @@ public class AuthenticationController(ISender sender, IMapper mapper) : ApiContr
     {
         var result =
             await _sender.Send(_mapper.Map<RegisterCommand>(request));
-        return result.IsSuccess ? Ok(_mapper.Map<AuthenticationResponse>(result.Value)) : Problem(result.Errors);
+        return result.Map(onSuccess: result => Ok(_mapper.Map<AuthenticationResponse>(result)), onFailure: Problem);
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginRequest request)
     {
         var result = await _sender.Send(_mapper.Map<LoginQuery>(request));
-        return result.IsSuccess ? Ok(_mapper.Map<AuthenticationResponse>(result.Value)) : Problem(result.Errors);
+        return result.IsSuccess ? Ok(_mapper.Map<AuthenticationResponse>(result.Value!)) : Problem(result.Errors);
     }
 }

@@ -22,7 +22,7 @@ internal class LoginQueryHandler : IRequestHandler<LoginQuery, Result<Authentica
         var user = _userRepository.GetByEmail(query.Email);
         if (user == null || user.Password != query.Password)
         {
-            return Result<AuthenticationResult>.Failure([new BadRequestError("Invalid email or password")]);
+            return Result<AuthenticationResult>.Failure(ErrorExtensions.BadRequestResult("Invalid email or password"));
         }
 
         var token = _jwtTokenGenerator.GenerateToken(user);

@@ -23,9 +23,9 @@ public class ApiController : ControllerBase
     /// </summary>
     /// <param name="errors">The list of errors to process.</param>
     /// <returns>An <see cref="IActionResult"/> representing the problem response.</returns>
-    protected IActionResult Problem(List<Error> errors)
+    protected IActionResult Problem(List<Error>? errors)
     {
-        switch (errors.Count)
+        switch (errors?.Count)
         {
             case 0:
                 return Problem(statusCode: (int)HttpStatusCode.InternalServerError, title: "An unexpected error occurred.");
@@ -35,7 +35,7 @@ public class ApiController : ControllerBase
             default:
             {
                 // Handle multiple errors
-                var errorDetails = errors.Select(GetErrorDetails).ToList();
+                var errorDetails = errors?.Select(GetErrorDetails).ToList();
                 return StatusCode((int)HttpStatusCode.MultiStatus, errorDetails); // 207 Multi-Status (for multiple errors)
             }
         }

@@ -21,7 +21,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Au
     {
         if (_userRepository.GetByEmail(command.Email) != null)
         {
-            return Result<AuthenticationResult>.Failure(new BadRequestError("Email already in use"));
+            return Result<AuthenticationResult>.Failure(ErrorExtensions.BadRequestResult("Email already in use"));
         }
 
         var newUser = new User

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,7 +9,10 @@ namespace CrimeVault.Domain.Abstractions;
 
 public class Error
 {
-    public Error(string message) => Message = message;
+    public Error(string message)
+    {
+        Message = message;
+    }
 
     public Error(string message, string code)
     {
@@ -17,6 +21,6 @@ public class Error
     }
 
     public string Message { get; }
-    public string Code { get; }
+    public string Code { get; } = HttpStatusCode.InternalServerError.ToString();
 }
 
