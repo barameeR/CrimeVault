@@ -4,11 +4,13 @@ using CrimeVault.Application.Services.Authentication.Queries.Login;
 using CrimeVault.Presentation.Authentication;
 using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CrimeVault.WebAPI.Controllers;
 
 [Route("auth")]
+[AllowAnonymous]
 public class AuthenticationController(ISender sender, IMapper mapper) : ApiController(sender, mapper)
 {
     [HttpPost("register")]
@@ -24,7 +26,5 @@ public class AuthenticationController(ISender sender, IMapper mapper) : ApiContr
     {
         var result = await _sender.Send(_mapper.Map<LoginQuery>(request));
         return result.Map(onSuccess: result => Ok(_mapper.Map<AuthenticationResponse>(result)), onFailure: Problem);
-
-
     }
 }

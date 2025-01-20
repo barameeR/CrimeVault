@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using MapsterMapper;
 using CrimeVault.Domain.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CrimeVault.WebAPI.Controllers;
 [ApiController]
+[Authorize]
 public class ApiController : ControllerBase
 {
     private const int DefaultStatusCode = (int)HttpStatusCode.BadRequest;
@@ -33,11 +35,11 @@ public class ApiController : ControllerBase
             case 1:
                 return CreateProblemResponse(errors[0]);
             default:
-            {
-                // Handle multiple errors
-                var errorDetails = errors?.Select(GetErrorDetails).ToList();
-                return StatusCode((int)HttpStatusCode.MultiStatus, errorDetails); // 207 Multi-Status (for multiple errors)
-            }
+                {
+                    // Handle multiple errors
+                    var errorDetails = errors?.Select(GetErrorDetails).ToList();
+                    return StatusCode((int)HttpStatusCode.MultiStatus, errorDetails); // 207 Multi-Status (for multiple errors)
+                }
         }
     }
 
@@ -76,7 +78,7 @@ public class ApiController : ControllerBase
     /// <returns>The status code extracted from the error metadata, or a default status code if not present.</returns>
     private static int GetStatusCode(Error error)
     {
-        return int.TryParse(error.Code,out var stautsCode) ? stautsCode : DefaultStatusCode;
+        return int.TryParse(error.Code, out var stautsCode) ? stautsCode : DefaultStatusCode;
     }
 }
 
