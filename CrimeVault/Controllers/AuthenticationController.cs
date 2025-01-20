@@ -23,6 +23,8 @@ public class AuthenticationController(ISender sender, IMapper mapper) : ApiContr
     public async Task<IActionResult> Login(LoginRequest request)
     {
         var result = await _sender.Send(_mapper.Map<LoginQuery>(request));
-        return result.IsSuccess ? Ok(_mapper.Map<AuthenticationResponse>(result.Value!)) : Problem(result.Errors);
+        return result.Map(onSuccess: result => Ok(_mapper.Map<AuthenticationResponse>(result)), onFailure: Problem);
+
+
     }
 }
