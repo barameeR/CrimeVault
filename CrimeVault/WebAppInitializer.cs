@@ -28,5 +28,12 @@ public static class WebAppInitializer
         // Do not reorder these lines
         app.Run();
     }
+
+    public static void Run(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddServices(builder.Configuration);
+        var app = builder.Build();
+        app.InitializeWebApplication();
+    }
 }
 
