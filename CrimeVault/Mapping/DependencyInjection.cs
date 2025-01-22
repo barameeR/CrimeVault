@@ -1,6 +1,6 @@
-﻿using System.Reflection;
-using Mapster;
+﻿using Mapster;
 using MapsterMapper;
+using System.Reflection;
 
 namespace CrimeVault.WebAPI.Mapping;
 
@@ -14,6 +14,6 @@ public static class DependencyInjection
         services.AddSingleton<IMapper, ServiceMapper>();
         return services;
     }
-        
-    
+
+
 }

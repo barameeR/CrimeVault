@@ -1,5 +1,4 @@
 ﻿using CrimeVault.Application.Services.Authentication.Commands.Register;
-using CrimeVault.Application.Services.Authentication.Common;
 using CrimeVault.Application.Services.Authentication.Queries.Login;
 using CrimeVault.Presentation.Authentication;
 using MapsterMapper;

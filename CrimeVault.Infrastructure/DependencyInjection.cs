@@ -39,7 +39,7 @@ public static class DependencyInjection
 
                                // Validate the audience (aud claim)
                                ValidateAudience = true,
-                               ValidAudience = jwtSettings.Audience, 
+                               ValidAudience = jwtSettings.Audience,
 
                                // Validate the signing key
                                ValidateIssuerSigningKey = true,

@@ -1,9 +1,9 @@
-﻿using MediatR;
+﻿using CrimeVault.Domain.Abstractions;
+using MapsterMapper;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using MapsterMapper;
-using CrimeVault.Domain.Abstractions;
-using Microsoft.AspNetCore.Authorization;
 
 namespace CrimeVault.WebAPI.Controllers;
 [ApiController]
