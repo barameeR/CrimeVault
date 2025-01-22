@@ -7,7 +7,7 @@ namespace CrimeVault.WebAPI;
 
 public static class WebAppInitializer
 {
-    public static void AddServices(this IServiceCollection services, ConfigurationManager configuration)
+    public static void AddServices(IServiceCollection services, ConfigurationManager configuration)
     {
         services.AddControllers();
         services.AddInfrastructure(configuration)
@@ -16,7 +16,7 @@ public static class WebAppInitializer
             .AddMapping();
     }
 
-    public static void InitializeWebApplication(this WebApplication app)
+    public static void ConfigureMiddleware(WebApplication app)
     {
         app.UseExceptionHandler("/error");
         app.UseHttpsRedirection();
@@ -26,14 +26,17 @@ public static class WebAppInitializer
         app.UseAuthorization();
         app.MapControllers();
         // Do not reorder these lines
+    }
+
+    public static void InitializeWebApplication(WebApplication app)
+    {
+        ConfigureMiddleware(app);
         app.Run();
     }
 
     public static void Run(this WebApplicationBuilder builder)
     {
-        builder.Services.AddServices(builder.Configuration);
-        var app = builder.Build();
-        app.InitializeWebApplication();
+        AddServices(builder.Services, builder.Configuration);
+        InitializeWebApplication(builder.Build());
     }
 }
-
