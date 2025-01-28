@@ -15,7 +15,6 @@ The main objective of this project is to explore the implementation of a C# solu
 ### Key Concepts
 
 - **Clean Architecture**: A framework that emphasizes separation of concerns and a well-defined structure for an application. It consists of layers such as the `Core`, `Application`, and `Infrastructure`, ensuring that the business logic remains decoupled from external dependencies like databases and APIs.
-  
 - **Crime Store**: A centralized storage to handle and manage crime-related data. This will include storing information such as crime types, locations, timestamps, and case statuses.
 
 ## Features
@@ -42,3 +41,7 @@ The architecture of CrimValut follows the principles of Clean Architecture, whic
 - **Entity Framework Core**: ORM for data access.
 - **SQL Server**: Database for storing crime data (hosted using Docker).
 - **Docker**: Containerization platform for running the database in a container.
+
+![Crime Diagram][crimeDiagramImage]
+
+[crimeDiagramImage]: /ReadMeSrc/dbDiagram.png
