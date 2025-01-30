@@ -1,11 +1,18 @@
-﻿namespace CrimeVault.Domain.Entities;
+﻿using CrimeVault.Domain.Primitives;
 
-public class User
+namespace CrimeVault.Domain.Entities;
+
+public class User : AggregateRoot<UserId>
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public User(UserId id) : base(id)
+    {
+    }
+
     public string FirstName { get; set; } = null!;
     public string LastName { get; set; } = null!;
     public string Email { get; set; } = null!;
     public string Password { get; set; } = null!;
 }
+
+public record UserId(Guid Value);
 

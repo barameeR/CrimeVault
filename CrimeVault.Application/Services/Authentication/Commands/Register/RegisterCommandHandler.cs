@@ -24,7 +24,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Au
             return Result<AuthenticationResult>.Failure(ErrorExtensions.BadRequestResult("Email already in use"));
         }
 
-        var newUser = new User
+        var newUser = new User(new UserId(Guid.NewGuid()))
         {
             FirstName = command.FirstName,
             LastName = command.LastName,

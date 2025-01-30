@@ -2,29 +2,29 @@
 
 namespace CrimeVault.Domain.Primitives;
 
-public abstract class Entity : IEquatable<Entity>
+public abstract class Entity<TId> : IEquatable<Entity<TId>>
 {
-    protected Entity(Guid id)
+    protected Entity(TId id)
     {
         Id = id;
     }
 
-    override public bool Equals(object? obj)
+    public override bool Equals(object? obj)
     {
         if (obj == null || GetType() != obj.GetType())
         {
             return false;
         }
-        var other = (Entity)obj;
-        return Id == other.Id;
+        var other = (Entity<TId>)obj;
+        return EqualityComparer<TId>.Default.Equals(Id, other.Id);
     }
 
-    override public int GetHashCode()
+    public override int GetHashCode()
     {
         return HashCode.Combine(Id);
     }
 
-    public bool Equals(Entity? other)
+    public bool Equals(Entity<TId>? other)
     {
         if (other == null)
         {
@@ -34,11 +34,12 @@ public abstract class Entity : IEquatable<Entity>
         if (other.GetType() != GetType())
         {
             return false;
-                };
-        return Id == other.Id;
+        }
+
+        return EqualityComparer<TId>.Default.Equals(Id, other.Id);
     }
 
-    public static bool operator ==(Entity? a, Entity? b)
+    public static bool operator ==(Entity<TId>? a, Entity<TId>? b)
     {
         if (a is null && b is null)
         {
@@ -51,12 +52,12 @@ public abstract class Entity : IEquatable<Entity>
         return a.Equals(b);
     }
 
-    public static bool operator !=(Entity? a, Entity? b)
+    public static bool operator !=(Entity<TId>? a, Entity<TId>? b)
     {
         return !(a == b);
     }
 
-    public Guid Id { get; private init; }
+    public TId Id { get; private init; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     public DeleteStatus IsDeleted { get; set; } = DeleteStatus.Active;
